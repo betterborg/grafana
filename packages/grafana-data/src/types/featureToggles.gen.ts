@@ -1132,6 +1132,11 @@ export interface FeatureToggles {
   */
   panelTimeSettings?: boolean;
   /**
+  * Enables per-panel refresh interval overrides
+  * @default false
+  */
+  panelRefreshOverride?: boolean;
+  /**
   * Enables http proxy settings for aws datasources
   * @default false
   */
