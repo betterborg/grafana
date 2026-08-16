@@ -2188,6 +2188,14 @@ var (
 			Expression:      "false",
 		},
 		{
+			Name:        "panelRefreshOverride",
+			Description: "Enables per-panel refresh interval overrides",
+			Generate:    Generate{LegacyGo: true, LegacyFrontend: true},
+			Stage:       FeatureStageExperimental,
+			Owner:       grafanaDashboardsSquad,
+			Expression:  "false",
+		},
+		{
 			Name:        "awsDatasourcesHttpProxy",
 			Description: "Enables http proxy settings for aws datasources",
 			Stage:       FeatureStageExperimental,

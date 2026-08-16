@@ -710,6 +710,10 @@ const (
 	// Enables a new panel time settings drawer
 	FlagPanelTimeSettings = "panelTimeSettings"
 
+	// FlagPanelRefreshOverride
+	// Enables per-panel refresh interval overrides
+	FlagPanelRefreshOverride = "panelRefreshOverride"
+
 	// FlagAwsDatasourcesHttpProxy
 	// Enables http proxy settings for aws datasources
 	FlagAwsDatasourcesHttpProxy = "awsDatasourcesHttpProxy"

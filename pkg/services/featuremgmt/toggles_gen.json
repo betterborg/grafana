@@ -4771,6 +4771,19 @@
     },
     {
       "metadata": {
+        "name": "panelRefreshOverride",
+        "resourceVersion": "1786872737455",
+        "creationTimestamp": "2026-08-16T09:32:17Z"
+      },
+      "spec": {
+        "description": "Enables per-panel refresh interval overrides",
+        "stage": "experimental",
+        "codeowner": "@grafana/dashboards-squad",
+        "expression": "false"
+      }
+    },
+    {
+      "metadata": {
         "name": "panelStyleActions",
         "resourceVersion": "1779296829158",
         "creationTimestamp": "2026-02-18T17:05:38Z",
