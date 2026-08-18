@@ -69,17 +69,13 @@ func TestV2PanelRefreshMappings(t *testing.T) {
 
 func v2beta1DashboardWithPanelRefresh(refresh string) *dashv2beta1.Dashboard {
 	queryOptions := dashv2beta1.DashboardQueryOptionsSpec{Refresh: &refresh}
+	panel := dashv2beta1.NewDashboardPanelKind()
+	panel.Spec.Data.Spec.QueryOptions = queryOptions
 	return &dashv2beta1.Dashboard{
 		Spec: dashv2beta1.DashboardSpec{
 			Elements: map[string]dashv2beta1.DashboardElement{
 				"panel": {
-					PanelKind: &dashv2beta1.DashboardPanelKind{
-						Spec: dashv2beta1.DashboardPanelSpec{
-							Data: dashv2beta1.DashboardQueryGroupKind{
-								Spec: dashv2beta1.DashboardQueryGroupSpec{QueryOptions: queryOptions},
-							},
-						},
-					},
+					PanelKind: panel,
 				},
 			},
 		},
