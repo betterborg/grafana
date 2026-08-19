@@ -504,6 +504,7 @@ AnnotationQueryKind: {
 QueryOptionsSpec: {
 	timeFrom?:         string
 	maxDataPoints?:    int
+	refresh?:          string
 	timeShift?:        string
 	timeCompare?:      string
 	queryCachingTTL?:  int
