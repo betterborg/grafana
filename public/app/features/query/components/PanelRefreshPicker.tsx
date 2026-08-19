@@ -13,9 +13,15 @@ export interface PanelRefreshPickerProps {
   value?: string | null;
   intervals?: string[];
   onChange: (value: string | undefined) => void;
+  hideLabel?: boolean;
 }
 
-export function PanelRefreshPicker({ value, intervals = defaultIntervals, onChange }: PanelRefreshPickerProps) {
+export function PanelRefreshPicker({
+  value,
+  intervals = defaultIntervals,
+  onChange,
+  hideLabel = false,
+}: PanelRefreshPickerProps) {
   const validIntervals = useMemo(() => contextSrv.getValidIntervals(intervals), [intervals]);
   const options = useMemo<Array<SelectableValue<string>>>(
     () => [
@@ -77,6 +83,27 @@ export function PanelRefreshPicker({ value, intervals = defaultIntervals, onChan
     [isValidCustomInterval, onChange]
   );
 
+  const picker = (
+    <Select
+      inputId="panel-refresh-picker"
+      aria-label={t('query.panel-refresh-picker.aria-label', 'Panel refresh interval')}
+      options={options}
+      value={selectedValue}
+      onChange={onSelect}
+      allowCustomValue
+      createOptionPosition="last"
+      isValidNewOption={isValidCustomInterval}
+      onCreateOption={onCreateOption}
+      formatCreateLabel={(input) =>
+        t('query.panel-refresh-picker.custom-option', 'Use custom interval: {{interval}}', { interval: input })
+      }
+    />
+  );
+
+  if (hideLabel) {
+    return picker;
+  }
+
   return (
     <Field
       label={t('query.panel-refresh-picker.label', 'Refresh')}
@@ -86,20 +113,7 @@ export function PanelRefreshPicker({ value, intervals = defaultIntervals, onChan
       )}
       noMargin
     >
-      <Select
-        inputId="panel-refresh-picker"
-        aria-label={t('query.panel-refresh-picker.aria-label', 'Panel refresh interval')}
-        options={options}
-        value={selectedValue}
-        onChange={onSelect}
-        allowCustomValue
-        createOptionPosition="last"
-        isValidNewOption={isValidCustomInterval}
-        onCreateOption={onCreateOption}
-        formatCreateLabel={(input) =>
-          t('query.panel-refresh-picker.custom-option', 'Use custom interval: {{interval}}', { interval: input })
-        }
-      />
+      {picker}
     </Field>
   );
 }
