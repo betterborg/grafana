@@ -122,12 +122,7 @@ function buildVizPanelStateWithRunner(
     vizPanelState._UNSAFE_customMigrationHandler = getV2AngularMigrationHandler(angularMigration);
   }
 
-  if (
-    queryOptions.timeFrom ||
-    queryOptions.timeShift ||
-    queryOptions.timeCompare ||
-    (config.featureToggles.panelRefreshOverride && queryOptions.refresh)
-  ) {
+  if (queryOptions.timeFrom || queryOptions.timeShift || queryOptions.timeCompare) {
     vizPanelState.$timeRange = new PanelTimeRange({
       timeFrom: queryOptions.timeFrom,
       timeShift: queryOptions.timeShift,

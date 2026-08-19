@@ -522,12 +522,7 @@ export function buildGridItemForPanel(panel: PanelModel): DashboardGridItem {
     });
   }
 
-  if (
-    panel.timeFrom ||
-    panel.timeShift ||
-    panel.timeCompare ||
-    (config.featureToggles.panelRefreshOverride && panelRefresh)
-  ) {
+  if (panel.timeFrom || panel.timeShift || panel.timeCompare) {
     vizPanelState.$timeRange = new PanelTimeRange({
       timeFrom: panel.timeFrom,
       timeShift: panel.timeShift,
