@@ -242,6 +242,8 @@ export class PanelRefresh extends SceneObjectBase<PanelRefreshState> {
 }
 
 export function setPanelRefreshFor(panel: VizPanel, refresh?: string): PanelRefresh {
+  refresh = refresh || undefined;
+
   if (
     config.featureToggles.panelRefreshOverride &&
     getPanelRefreshPolicy(refresh) !== PanelRefreshPolicy.Inherit &&
