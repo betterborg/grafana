@@ -44,6 +44,12 @@ describe('PanelRefreshPicker', () => {
     await userEvent.type(picker, 'not-a-duration');
     expect(screen.queryByRole('option', { name: 'Use custom interval: not-a-duration' })).not.toBeInTheDocument();
 
+    for (const interval of ['1.5s', '20s 10s', '1m30s']) {
+      await userEvent.clear(picker);
+      await userEvent.type(picker, interval);
+      expect(screen.queryByRole('option', { name: `Use custom interval: ${interval}` })).not.toBeInTheDocument();
+    }
+
     await userEvent.clear(picker);
     await userEvent.type(picker, '45s');
     await userEvent.click(screen.getByRole('option', { name: 'Use custom interval: 45s' }));

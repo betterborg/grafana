@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react';
 
-import { isValidGrafanaDuration, rangeUtil, type SelectableValue } from '@grafana/data';
+import { rangeUtil, type SelectableValue } from '@grafana/data';
 import { t } from '@grafana/i18n';
 import { defaultIntervals, Field, Select } from '@grafana/ui';
 import { contextSrv } from 'app/core/services/context_srv';
 
 const defaultValue = '__default';
 const offValue = 'off';
+const panelRefreshIntervalPattern = /^\d+(?:ms|[Mwdhmsy])$/;
 
 export interface PanelRefreshPickerProps {
   value?: string | null;
@@ -40,7 +41,7 @@ export function PanelRefreshPicker({ value, intervals = defaultIntervals, onChan
   const isValidCustomInterval = useCallback(
     (input: string) => {
       const interval = input.trim();
-      if (!isValidGrafanaDuration(interval) || validIntervals.includes(interval)) {
+      if (!panelRefreshIntervalPattern.test(interval) || validIntervals.includes(interval)) {
         return false;
       }
 
