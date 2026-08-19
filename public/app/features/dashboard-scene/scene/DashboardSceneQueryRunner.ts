@@ -35,6 +35,7 @@ type SubscribeToTimeRangeChanges = (timeRange: SceneTimeRangeLike) => void;
 export class DashboardSceneQueryRunner extends SceneQueryRunner {
   private nextLifecycleId = 0;
   private pendingLifecycle?: PendingDashboardQueryLifecycle;
+  private completedLifecycle?: DashboardQueryLifecycle;
   private nextRunLifecycle?: PendingDashboardQueryLifecycle;
   private activePreparations = new Set<number>();
   private lifecycleByTimeRange = new WeakMap<SceneTimeRangeLike, PendingDashboardQueryLifecycle>();
@@ -127,6 +128,18 @@ export class DashboardSceneQueryRunner extends SceneQueryRunner {
 
     const { id, origin, requestId } = this.pendingLifecycle;
     return { id, origin, requestId };
+  }
+
+  public getLifecycleForRequest(requestId: string | undefined): Readonly<DashboardQueryLifecycle> | undefined {
+    if (requestId && this.pendingLifecycle?.requestId === requestId) {
+      return this.getPendingLifecycle();
+    }
+
+    if (requestId && this.completedLifecycle?.requestId === requestId) {
+      return this.completedLifecycle;
+    }
+
+    return undefined;
   }
 
   public isQueryPending(origin?: RefreshOrigin): boolean {
@@ -243,10 +256,11 @@ export class DashboardSceneQueryRunner extends SceneQueryRunner {
     if (state === LoadingState.Done || state === LoadingState.Error) {
       if (lifecycle.requestId) {
         if (requestId === lifecycle.requestId) {
-          this.clearPendingLifecycle(lifecycle.id);
+          this.completePendingLifecycle(lifecycle);
         }
       } else if (!this.activePreparations.has(lifecycle.id) && requestId !== lifecycle.previousRequestId) {
-        this.clearPendingLifecycle(lifecycle.id);
+        lifecycle.requestId = requestId;
+        this.completePendingLifecycle(lifecycle);
       }
       return;
     }
@@ -265,5 +279,11 @@ export class DashboardSceneQueryRunner extends SceneQueryRunner {
     if (lifecycleId !== undefined && this.pendingLifecycle?.id === lifecycleId) {
       this.pendingLifecycle = undefined;
     }
+  }
+
+  private completePendingLifecycle(lifecycle: PendingDashboardQueryLifecycle): void {
+    const { id, origin, requestId } = lifecycle;
+    this.completedLifecycle = { id, origin, requestId };
+    this.clearPendingLifecycle(id);
   }
 }
